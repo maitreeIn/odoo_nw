@@ -1,0 +1,8 @@
+<odoo>
+    <data noupdate="1">
+        <record id="nw_customer_default" model="nw.customer">
+            <field name="name">ลูกค้าทั่วไป</field>
+        </record>
+    </data>
+</odoo>
+

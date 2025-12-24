@@ -10,11 +10,11 @@ class ReportNwCashBill(models.AbstractModel):
         docs = self.env["nw.sale.order"].browse(docids)
 
         order_pages = {}
-        max_lines = 15  # กำหนดจำนวนบรรทัดต่อหน้า
+        max_lines = 1000  # Thermal printer: allow many lines per page (effectively one long page)
 
         for order in docs:
             lines = order.order_line_ids
-            # แบ่ง lines เป็นชุดๆ ชุดละ 15
+            # แบ่ง lines เป็นชุดๆ (กรณีเยอะมากๆ)
             chunks = [lines[i : i + max_lines] for i in range(0, len(lines), max_lines)]
             if not chunks:
                 chunks = [[]]
@@ -41,9 +41,7 @@ class ReportNwCashBill(models.AbstractModel):
                             }
                         )
 
-                    # เติมบรรทัดว่างให้ครบ 15
-                    while len(page_lines) < max_lines:
-                        page_lines.append(None)
+                    # ไม่ต้องเติมบรรทัดว่างสำหรับ Thermal Printer
 
                     pages_data.append(
                         {

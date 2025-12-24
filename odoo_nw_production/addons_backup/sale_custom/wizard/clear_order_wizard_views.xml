@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_nw_clear_order_wizard_form" model="ir.ui.view">
+        <field name="name">nw.clear.order.wizard.form</field>
+        <field name="model">nw.clear.order.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Clear Orders">
+                <group>
+                    <group>
+                        <field name="clear_all"/>
+                        <field name="days" attrs="{'invisible': [('clear_all', '=', True)]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_clear_orders" string="ยืนยันการลบ" type="object" class="btn-danger"/>
+                    <button string="ยกเลิก" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_nw_clear_order_wizard" model="ir.actions.act_window">
+        <field name="name">Clear Orders</field>
+        <field name="res_model">nw.clear.order.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_clear_order_wizard" name="Clear Orders" parent="menu_nw_sale_order_main" action="action_nw_clear_order_wizard" sequence="30"/>
+</odoo>

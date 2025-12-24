@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class NwSaleOrder(models.Model):
     _name = "nw.sale.order"
+    _inherit = ["barcodes.barcode_events_mixin"]
     _description = "NW Sale Order"
 
     name = fields.Char(
@@ -44,6 +45,32 @@ class NwSaleOrder(models.Model):
     )
 
     is_copy = fields.Boolean(string="สำเนา", default=False)
+
+    def on_barcode_scanned(self, barcode):
+        _logger.info(f"Barcode Scanned: {barcode}")
+        
+        product = self.env['nw.product'].search([('barcode', '=', barcode)], limit=1)
+        _logger.info(f"Product Found: {product}")
+        
+        if product:
+            # Check if product already exists in lines
+            existing_line = self.order_line_ids.filtered(lambda l: l.product_id == product)
+            if existing_line:
+                existing_line.quantity += 1
+            else:
+                # Use One2many command to add line dynamically (Command: 0 = CREATE)
+                self.order_line_ids = [(0, 0, {
+                    'product_id': product.id,
+                    'quantity': 1,
+                    'price': product.sale_price + product.add_price if self.is_add_sale_price else product.sale_price,
+                })]
+        else:
+            return {
+                'warning': {
+                    'title': "ไม่พบสินค้า",
+                    'message': f"ไม่พบสินค้าที่มีบาร์โค้ด: {barcode}",
+                }
+            }
 
     def action_confirm(self):
         for rec in self:

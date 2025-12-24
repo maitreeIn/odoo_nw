@@ -2,7 +2,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_sale_custom_user,access_sale_custom_user,model_sale_custom,base.group_user,1,1,1,1
 access_nw_customer,access_nw_customer,model_nw_customer,base.group_user,1,1,1,1
 access_nw_product,access_nw_product,model_nw_product,base.group_user,1,1,1,1
-access_nw_product,nw_product,model_nw_product,base.group_user,1,1,1,1
+
 ;access_nw_account_line,nw_account_line,model_nw_account_line,base.group_user,1,1,1,1
 access_nw_sale_order,nw_sale_order,model_nw_sale_order,base.group_user,1,1,1,1
 access_nw_sale_order_line,nw_sale_order_line,model_nw_sale_order_line,base.group_user,1,1,1,1
@@ -12,5 +12,6 @@ access_nw_clear_order_wizard,nw_clear_order_wizard,model_nw_clear_order_wizard,b
 access_nw_account_payment_wizard,nw_account_payment_wizard,model_nw_account_payment_wizard,base.group_user,1,1,1,1
 access_print_server_printer,print_server_printer,model_print_server_printer,base.group_user,1,1,1,1
 access_print_report_mapping,print_report_mapping,model_print_report_mapping,base.group_user,1,1,1,1
+access_product_barcode_wizard,nw_product_barcode_wizard,model_nw_product_barcode_wizard,base.group_user,1,1,1,1
 
 

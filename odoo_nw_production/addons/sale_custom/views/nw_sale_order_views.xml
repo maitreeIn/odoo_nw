@@ -31,13 +31,13 @@
                     
                     <!-- Print Server Buttons -->
                     <button name="action_print_to_printer_a" 
-                            string="🖨️ พิมพ์บิลเงินสด/ใบส่งของ (Printer A)" 
+                            string="พิมพ์บิลเงินสด / ใบส่งของ" 
                             type="object" 
                             class="btn-primary"
                             attrs="{'invisible': [('order_status', '=', 'draft')]}"/>
                     
                     <button name="action_print_to_printer_b" 
-                            string="🖨️ พิมพ์บิลเงินสด (Printer B)" 
+                            string="พิมพ์บิลเงินสด" 
                             type="object" 
                             class="btn-info"
                             attrs="{'invisible': [('order_status', '=', 'draft')]}"/>
@@ -46,6 +46,7 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="_barcode_scanned" widget="barcode_handler" invisible="0"/>
                             <field name="name"/>
                             <field name="customer_id" attrs="{'readonly': [('order_status', '!=', 'draft')]}"/>
                             <field name="order_date" attrs="{'readonly': [('order_status', '!=', 'draft')]}"/>

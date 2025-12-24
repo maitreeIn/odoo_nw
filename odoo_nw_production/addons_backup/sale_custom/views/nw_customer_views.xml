@@ -1,0 +1,67 @@
+<odoo>
+    <record id="view_customer_tree" model="ir.ui.view">
+        <field name="name">nw.customer.tree</field>
+        <field name="model">nw.customer</field>
+        <field name="arch" type="xml">
+            <tree string="Customers">
+                <field name="name"/>
+                <field name="last_name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="address"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_customer_form" model="ir.ui.view">
+        <field name="name">nw.customer.form</field>
+        <field name="model">nw.customer</field>
+        <field name="arch" type="xml">
+            <form string="Customer">
+                <header>
+                    <button name="%(sale_custom.action_open_payment_wizard)d" string="ชำระเงิน" type="action" class="oe_highlight" />
+                    <button name="action_clear_lines" string="ตัดยอดบัญชี (ยอดยกมา)" type="object" confirm="คุณแน่ใจหรือไม่? รายการประวัติทั้งหมดจะถูกลบและแทนที่ด้วยยอดยกมา" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="last_name"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="address"/>
+                            <field name="note"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="total_balance" decoration-danger="total_balance &lt; 0" decoration-success="total_balance &gt; 0"/>
+                    </group>
+                    <notebook>
+                        <page string="Payment Lines">
+                            <field name="account_line_ids" readonly="1">
+                                <tree create="0" delete="0" edit="0">
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                    <field name="transaction_type"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_customer" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">nw.customer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="sale_custom.menu_customer_main" name="Customers" parent="menu_sale_custom_root" action="action_customer" sequence="2" groups="base.group_user" />
+
+</odoo>
+

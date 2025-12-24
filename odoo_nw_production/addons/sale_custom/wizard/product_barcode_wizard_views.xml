@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_barcode_wizard_form" model="ir.ui.view">
+        <field name="name">product.barcode.wizard.form</field>
+        <field name="model">nw.product.barcode.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Print Product Barcode">
+                <group>
+                    <field name="product_id"/>
+                    <field name="quantity"/>
+                </group>
+                <footer>
+                    <button name="action_print_barcode" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_barcode_wizard" model="ir.actions.act_window">
+        <field name="name">Print Barcode</field>
+        <field name="res_model">nw.product.barcode.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_product_barcode_wizard"
+              name="Print Barcode"
+              parent="sale_custom.menu_sale_custom_root"
+              action="action_product_barcode_wizard"
+              sequence="25"/>
+</odoo>

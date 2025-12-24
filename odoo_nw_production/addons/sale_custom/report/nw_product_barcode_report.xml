@@ -2,7 +2,7 @@
 <odoo>
     <!-- Report Action -->
     <record id="action_report_nw_product_barcode" model="ir.actions.report">
-        <field name="name">Product Barcode (PDF)</field>
+        <field name="name">Product Barcode (PDFx)</field>
         <field name="model">nw.product</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">sale_custom.report_nw_product_barcode</field>

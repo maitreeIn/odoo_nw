@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class Customer(models.Model):
@@ -75,3 +76,17 @@ class NwAccountLine(models.Model):
         default="credit",
         help="ระบุว่ารายการนี้เป็นหนี้ (-) หรือเงินที่ลูกค้าจ่าย (+)",
     )
+    is_manual = fields.Boolean(string="Manual Entry", default=False)
+
+    @api.model
+    def create(self, vals):
+        if not vals.get('name'):
+            vals['name'] = f"{self.env.user.name} เพิ่มยอด"
+            vals['is_manual'] = True
+        return super(NwAccountLine, self).create(vals)
+
+    def unlink(self):
+        for rec in self:
+            if not rec.is_manual:
+                raise UserError("คุณสามารถลบได้เฉพาะรายการที่เพิ่มเองเท่านั้น")
+        return super(NwAccountLine, self).unlink()

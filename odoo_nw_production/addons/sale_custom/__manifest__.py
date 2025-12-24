@@ -4,7 +4,7 @@
     "version": "15.0.1.0.0",
     "summary": "Custom Sale Main Menu",
     "category": "Sales",
-    "depends": ["base", "product"],
+    "depends": ["base", "product", "barcodes"],
     "data": [
         "data/nw_customer_data.xml",
         "data/ir_sequence_data.xml",
@@ -15,6 +15,7 @@
         "wizard/payment_wizard_views.xml",
         "data/cleanup_view.xml",
         "views/print_server_views.xml",  # New Print Server Views
+        "views/res_config_settings_views.xml", # Settings View
         "views/sale_custom_menu.xml",  # 1. สร้าง Root Menu
         "views/nw_customer_views.xml",
         "views/nw_product_views.xml",
@@ -22,6 +23,8 @@
         "wizard/clear_order_wizard_views.xml",  # <--- 3. ย้ายมาไว้ตรงนี้ (เพื่อให้มองเห็นเมนูแม่จากข้อ 2)
         "report/nw_sale_order_report.xml",
         "report/nw_product_barcode_report.xml",
+        "wizard/product_barcode_wizard_views.xml",
+        "report/product_barcode_report.xml",
     ],
     "installable": True,
     "application": True,

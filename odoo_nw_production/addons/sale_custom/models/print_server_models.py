@@ -34,13 +34,7 @@ class PrintServerPrinter(models.Model):
         def try_sync(url):
             _logger.info("Syncing printers from %s", url)
             response = requests.get(f"{url}/api/printers", timeout=5)
-            if response.status_code != 200:
-                try:
-                    error_data = response.json()
-                    error_msg = error_data.get('error', response.reason)
-                except Exception:
-                    error_msg = response.text or response.reason
-                raise Exception(f"Server Error ({response.status_code}): {error_msg}")
+            response.raise_for_status()
             return response.json()
 
         try:

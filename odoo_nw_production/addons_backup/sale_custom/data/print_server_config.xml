@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Print Server Configuration -->
+        <record id="print_server_url_config" model="ir.config_parameter">
+            <field name="key">sale_custom.print_server_url</field>
+            <field name="value">http://localhost:5000</field>
+        </record>
+
+        <record id="printer_a_name_config" model="ir.config_parameter">
+            <field name="key">sale_custom.printer_a_name</field>
+            <field name="value">PrinterA</field>
+        </record>
+
+        <record id="printer_b_name_config" model="ir.config_parameter">
+            <field name="key">sale_custom.printer_b_name</field>
+            <field name="value">PrinterB</field>
+        </record>
+
+        <record id="print_server_enabled_config" model="ir.config_parameter">
+            <field name="key">sale_custom.print_server_enabled</field>
+            <field name="value">True</field>
+        </record>
+    </data>
+</odoo>
