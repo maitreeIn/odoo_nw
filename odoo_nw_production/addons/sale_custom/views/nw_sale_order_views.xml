@@ -1,0 +1,103 @@
+<odoo>
+    <!-- 1️⃣ Tree View -->
+    <record id="view_nw_sale_order_tree" model="ir.ui.view">
+        <field name="name">nw.sale.order.tree</field>
+        <field name="model">nw.sale.order</field>
+        <field name="arch" type="xml">
+            <tree string="NW Sale Orders">
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="order_date"/>
+                <field name="order_status"/>
+                <field name="total"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- 2️⃣ Form View -->
+    <record id="view_nw_sale_order_form" model="ir.ui.view">
+        <field name="name">nw.sale.order.form</field>
+        <field name="model">nw.sale.order</field>
+        <field name="arch" type="xml">
+            <form string="NW Sale Order">
+                <header>
+                    <field name="order_status" widget="statusbar" statusbar_visible="draft,confirm,cancel"/>
+                    <button name="action_confirm" string="ยืนยัน" type="object" class="oe_highlight" attrs="{'invisible': [('order_status', '!=', 'draft')]}"/>
+
+                    <button name="action_draft" string="Set to Draft" type="object" attrs="{'invisible': [('order_status', '!=', 'cancel')]}"/>
+
+
+                    <button name="action_cancel" string="ยกเลิก" type="object" attrs="{'invisible': [('order_status', '=', 'cancel')]}"/>
+                    
+                    <!-- Print Server Buttons -->
+                    <button name="action_print_to_printer_a" 
+                            string="🖨️ พิมพ์บิลเงินสด/ใบส่งของ (Printer A)" 
+                            type="object" 
+                            class="btn-primary"
+                            attrs="{'invisible': [('order_status', '=', 'draft')]}"/>
+                    
+                    <button name="action_print_to_printer_b" 
+                            string="🖨️ พิมพ์บิลเงินสด (Printer B)" 
+                            type="object" 
+                            class="btn-info"
+                            attrs="{'invisible': [('order_status', '=', 'draft')]}"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="customer_id" attrs="{'readonly': [('order_status', '!=', 'draft')]}"/>
+                            <field name="order_date" attrs="{'readonly': [('order_status', '!=', 'draft')]}"/>
+                            <field name="payment_type" widget="radio" attrs="{'readonly': [('order_status', '!=', 'draft')]}"/>
+                            <field name="is_copy"/>
+                            <field name="is_add_sale_price" attrs="{'readonly': [('order_status', '!=', 'draft')]}"/>
+                        </group>
+                    </group>
+
+                    <!-- ✅ ส่วนของ Order Lines -->
+                    <notebook>
+                        <page string="Order Lines">
+                            <field name="order_line_ids" attrs="{'readonly': [('order_status', '!=', 'draft')]}">
+                                <tree editable="bottom" string="Order Lines">
+                                    <field name="barcode"/>
+                                    <field name="product_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="quantity"/>
+                                    <field name="price"/>
+                                    <field name="sub_total" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group>
+                        <field name="total" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 3️⃣ Action -->
+    <record id="action_nw_sale_order" model="ir.actions.act_window">
+        <field name="name">Sale Orders</field>
+        <field name="res_model">nw.sale.order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- 4️⃣ Menu -->
+    <menuitem id="menu_nw_sale_order_main" name="Sale Orders" parent="menu_sale_custom_root" sequence="1" action="action_nw_sale_order"/>
+
+    <menuitem id="menu_nw_sale_order" name="Orders" parent="menu_nw_sale_order_main" sequence="1" action="action_nw_sale_order"/>
+
+    <record id="action_server_download_excel" model="ir.actions.server">
+        <field name="name">Sales Report (Excel)</field>
+        <field name="model_id" ref="model_nw_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_download_excel_report()
+        </field>
+    </record>
+
+    <menuitem id="menu_sale_report_excel_all" name="Sales Report (Excel)" parent="menu_nw_sale_order_main" action="action_server_download_excel" sequence="20"/>
+</odoo>
+

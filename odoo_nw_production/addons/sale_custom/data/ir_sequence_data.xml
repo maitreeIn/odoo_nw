@@ -1,0 +1,15 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_nw_sale_order" model="ir.sequence">
+            <field name="name">NW Sale Order</field>
+            <field name="code">nw.sale.order</field>
+            <field name="prefix">SO</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+    </data>
+</odoo>
+

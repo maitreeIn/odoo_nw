@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Delete the lingering view from previous attempt -->
+        <delete model="ir.ui.view" id="sale_custom.view_print_config_settings"/>
+    </data>
+</odoo>

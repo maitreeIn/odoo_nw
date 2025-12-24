@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem
+        id="menu_sale_custom_root"
+        name="Sale Orders"
+        sequence="10"
+        groups="sale_custom.group_sale_custom_user"
+    />
+
+
+    <!-- Print Configuration Menu -->
+    <menuitem id="menu_print_config_root"
+              name="Print Configuration"
+              parent="menu_sale_custom_root"
+              sequence="90"/>
+
+    <menuitem id="menu_print_server_printer"
+              name="Printers"
+              parent="menu_print_config_root"
+              action="action_print_server_printer"
+              sequence="10"/>
+
+    <menuitem id="menu_print_report_mapping"
+              name="Report Mappings"
+              parent="menu_print_config_root"
+              action="action_print_report_mapping"
+              sequence="20"/>
+
+    <menuitem id="menu_sync_printers"
+              name="Sync Printers (Click to Update)"
+              parent="menu_print_config_root"
+              action="action_sync_printers_server"
+              sequence="30"/>
+</odoo>

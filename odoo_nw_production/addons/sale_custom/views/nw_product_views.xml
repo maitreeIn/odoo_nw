@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_nw_product_tree" model="ir.ui.view">
+        <field name="name">nw.product.tree</field>
+        <field name="model">nw.product</field>
+        <field name="arch" type="xml">
+            <tree string="Products">
+                <field name="name"/>
+                <field name="sale_price"/>
+                <field name="add_price"/>
+                <field name="barcode"/>
+                <field name="default_code"/>
+                <field name="category_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_nw_product_form" model="ir.ui.view">
+        <field name="name">nw.product.form</field>
+        <field name="model">nw.product</field>
+        <field name="arch" type="xml">
+            <form string="Product">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sale_price"/>
+                            <field name="add_price"/>
+                            <field name="barcode"/>
+                            <field name="barcode_image" widget="image" readonly="1" attrs="{'invisible': [('barcode_image', '=', False)]}"/>
+                            <field name="default_code"/>
+                            <field name="category_id"/>
+                        </group>
+                        <group>
+                            <field name="image" widget="image"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Note">
+                            <field name="note"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_nw_product" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">nw.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_nw_product"
+              name="Products"
+              parent="menu_sale_custom_root"
+              action="action_nw_product"
+              groups="base.group_user"
+              sequence="20"/>
+</odoo>
+

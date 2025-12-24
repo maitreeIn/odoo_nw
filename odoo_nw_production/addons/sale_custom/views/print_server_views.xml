@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Printer List View -->
+        <record id="view_print_server_printer_tree" model="ir.ui.view">
+            <field name="name">print.server.printer.tree</field>
+            <field name="model">print.server.printer</field>
+            <field name="arch" type="xml">
+                <tree string="Printers" create="false" edit="false">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="status" widget="badge" decoration-success="status == 'ready'" decoration-danger="status == 'offline'"/>
+                    <field name="is_active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Printer Action -->
+        <record id="action_print_server_printer" model="ir.actions.act_window">
+            <field name="name">Printers</field>
+            <field name="res_model">print.server.printer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No printers found. Click "Sync Printers" to fetch from server.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Server Action for Sync -->
+        <record id="action_sync_printers_server" model="ir.actions.server">
+            <field name="name">Sync Printers</field>
+            <field name="model_id" ref="model_print_server_printer"/>
+            <field name="binding_model_id" ref="model_print_server_printer"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_sync_printers()
+            </field>
+        </record>
+
+        <!-- Mapping Tree View -->
+        <record id="view_print_report_mapping_tree" model="ir.ui.view">
+            <field name="name">print.report.mapping.tree</field>
+            <field name="model">print.report.mapping</field>
+            <field name="arch" type="xml">
+                <tree string="Report Mappings" editable="bottom">
+                    <field name="report_id"/>
+                    <field name="printer_id"/>
+                    <field name="description"/>
+                    <button name="action_test_print" string="Test Print" type="object" icon="fa-print"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Mapping Action -->
+        <record id="action_print_report_mapping" model="ir.actions.act_window">
+            <field name="name">Report Mappings</field>
+            <field name="res_model">print.report.mapping</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new mapping to link a report to a printer.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

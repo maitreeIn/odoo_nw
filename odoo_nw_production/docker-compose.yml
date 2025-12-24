@@ -1,0 +1,50 @@
+version: '3.1'
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - ./config:/etc/odoo
+      - odoo-web-data:/var/lib/odoo
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    restart: always
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+    restart: always
+
+  # print_server:
+  #   build: ./print_server
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - ./print_server/mock_output:/app/mock_output
+  #     - ./print_server/logs:/app/logs
+  #     - ./print_server:/app
+  #     - /var/run/cups/cups.sock:/var/run/cups/cups.sock
+  #   environment:
+  #     - PRINT_SERVER_HOST=0.0.0.0
+  #     - PRINT_SERVER_PORT=5000
+  #     - MOCK_MODE=False
+  #     - DEBUG=True
+  #   restart: always
+  # NOTE: Print Server now runs natively on Windows (outside Docker)
+  # To connect Odoo to it, set system parameter:
+  # sale_custom.print_server_url = http://host.docker.internal:5000
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:

@@ -1,0 +1,68 @@
+<odoo>
+    <record id="view_nw_account_tree" model="ir.ui.view">
+        <field name="name">nw.account.tree</field>
+        <field name="model">nw.account</field>
+        <field name="arch" type="xml">
+            <tree string="NW Accounts">
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="order_date"/>
+                <field name="dute_date"/>
+                <field name="status"/>
+                <field name="total_amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_nw_account_form" model="ir.ui.view">
+        <field name="name">nw.account.form</field>
+        <field name="model">nw.account</field>
+        <field name="arch" type="xml">
+            <form string="NW Account">
+                <header>
+                    <button name="%(sale_custom.action_open_payment_wizard)d" 
+                            string="ชำระเงิน" 
+                            type="action" 
+                            class="oe_highlight"
+                            />
+                    <field name="status" widget="statusbar" statusbar_visible="draft,confirm,paid,cancel"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="customer_id"/>
+                        <field name="order_date"/>
+                        <field name="dute_date"/>
+                        <field name="total_amount" readonly="1"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Payment Lines">
+                            <field name="account_line_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                    <field name="transaction_type"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_nw_account" model="ir.actions.act_window">
+        <field name="name">Accounts</field>
+        <field name="res_model">nw.account</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_nw_account_main"
+            name="Accounts"
+            parent="menu_sale_custom_root"
+            groups="base.group_user"
+            action="action_nw_account"
+            />
+</odoo>
+

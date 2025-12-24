@@ -1,0 +1,8 @@
+<odoo>
+    <record id="module_category_sale_custom" model="ir.module.category">
+        <field name="name">Sale</field>
+        <field name="sequence">10</field>
+        <field name="visible" eval="True"/>
+    </record>
+</odoo>
+

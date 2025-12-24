@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_nw_sale_order" model="ir.actions.report">
+            <field name="name">บิลเงินสด / ใบส่งของ (PDF)</field>
+            <field name="model">nw.sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sale_custom.report_nw_sale_order</field>
+            <field name="report_file">sale_custom.report_nw_sale_order</field>
+
+            <field name="paperformat_id" ref="base.paperformat_euro"/>
+
+            <field name="binding_model_id" ref="model_nw_sale_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="report_nw_sale_order">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-foreach="order_pages[doc.id]" t-as="page">
+                        <t t-call="web.basic_layout">
+                            <div class="page" style="font-family: Sarabun, sans-serif; font-size: 14px; position: relative; height: 950px;">
+                                <!-- <div class="page" style="font-family: Sarabun, sans-serif; font-size: 14px; position: relative; height: 1000px;"> -->
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h4>
+                                            <b>บิลเงินสด / ใบส่งของ</b>
+                                        </h4>
+                                        <div>"                                            <span t-esc="page['copy_label']"/>
+"</div>
+                                        <!-- <div>"ต้นฉบับ"</div> -->
+                                    </div>
+                                    <div class="col-12 text-right" style="position: absolute; top: 0; right: 0;">
+                                        <span>
+                                            <t t-esc="page['page_no']"/>
+/                                            <t t-esc="page['total_pages']"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div style="border: 1px solid black; padding: 5px; margin-top: 10px;">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <strong>วันที่:</strong>
+                                            <span t-field="doc.order_date"/>
+                                            <br/>
+                                            <strong>เลขที่:</strong>
+                                            <span t-field="doc.name"/>
+                                            <br/>
+                                            <strong>ลูกค้า:</strong>
+                                            <span t-field="doc.customer_id.name"/>
+                                            <br/>
+                                            <strong>ที่อยู่:</strong>
+                                            <span t-field="doc.customer_id.address"/>
+                                            <br/>
+                                            <strong>ติดต่อ:</strong>
+                                            <span t-field="doc.customer_id.phone"/>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong>เวลา:</strong>
+                                            <span t-esc="print_time"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered table-sm mt-2" style="border: 1px solid black; width: 100%; text-align: center;">
+                                    <thead>
+                                        <tr style="background-color: #f0f0f0;">
+                                            <th style="width: 5%; border: 1px solid black;">ลำดับ</th>
+                                            <th style="width: 45%; border: 1px solid black;">ชื่อสินค้า</th>
+                                            <th style="width: 10%; border: 1px solid black;">จำนวน</th>
+                                            <th style="width: 10%; border: 1px solid black;">หน่วย</th>
+                                            <th style="width: 15%; border: 1px solid black;">จำนวนเงิน</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="page['lines']" t-as="line" style="height: 30px;">
+                                            <t t-if="line">
+                                                <td style="border: 1px solid black;">
+                                                    <span t-esc="line['seq']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: left; padding-left: 5px;">
+                                                    <span t-esc="line['name']"/>
+                                                </td>
+                                                <td style="border: 1px solid black;">
+                                                    <span t-esc="line['qty']"/>
+                                                </td>
+                                                <td style="border: 1px solid black;">
+                                                    <span t-esc="line['unit']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding-right: 5px;">
+                                                    <span t-esc="line['sub_total']"/>
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                            </t>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <t t-if="page['is_last']">
+                                    <div class="row mr-0">
+                                        <div class="col-4 offset-8 pr-0">
+                                            <table class="table table-bordered table-sm" style="border: 1px solid black;">
+                                                <tr>
+                                                    <td style="border: 1px solid black;">
+                                                        <strong>ผลรวม</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black; text-align: right;">
+                                                        <span t-field="doc.total"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
+
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <record id="action_report_nw_cash_bill" model="ir.actions.report">
+            <field name="name">บิลเงินสด (Cash Bill)</field>
+            <field name="model">nw.sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sale_custom.report_nw_cash_bill</field>
+            <field name="report_file">sale_custom.report_nw_cash_bill</field>
+            <field name="paperformat_id" ref="base.paperformat_euro"/>
+            <field name="binding_model_id" ref="model_nw_sale_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="report_nw_cash_bill">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-foreach="order_pages[doc.id]" t-as="page">
+                        <t t-call="web.basic_layout">
+                            <div class="page" style="font-family: Sarabun, sans-serif; font-size: 14px; position: relative; height: 950px;">
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h4>
+                                            <b>บิลเงินสด / CASH BILL</b>
+                                        </h4>
+                                        <div>"                                            <span t-esc="page['copy_label']"/>
+"</div>
+                                    </div>
+                                    <div class="col-12 text-right" style="position: absolute; top: 0; right: 0;">
+                                        <span>หน้า                                            <t t-esc="page['page_no']"/>
+ /                                            <t t-esc="page['total_pages']"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div style="border: 1px solid black; padding: 5px; margin-top: 10px;">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <strong>นามลูกค้า:</strong>
+                                            <span t-field="doc.customer_id.name"/>
+                                            <br/>
+                                            <strong>ที่อยู่:</strong>
+                                            <span t-field="doc.customer_id.address"/>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <strong>วันที่:</strong>
+                                            <span t-field="doc.order_date"/>
+                                            <br/>
+                                            <strong>เลขที่:</strong>
+                                            <span t-field="doc.name"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered table-sm mt-2" style="border: 1px solid black; width: 100%; text-align: center;">
+                                    <thead>
+                                        <tr style="background-color: #f0f0f0;">
+                                            <th style="width: 10%; border: 1px solid black;">ลำดับ</th>
+                                            <th style="width: 60%; border: 1px solid black;">รายการ</th>
+                                            <th style="width: 15%; border: 1px solid black;">จำนวน</th>
+                                            <th style="width: 15%; border: 1px solid black;">จำนวนเงิน</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="page['lines']" t-as="line" style="height: 30px;">
+                                            <t t-if="line">
+                                                <td style="border: 1px solid black;">
+                                                    <span t-esc="line['seq']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: left; padding-left: 5px;">
+                                                    <span t-esc="line['name']"/>
+                                                </td>
+                                                <td style="border: 1px solid black;">
+                                                    <span t-esc="line['qty']"/>
+                                                </td>
+                                                <td style="border: 1px solid black; text-align: right; padding-right: 5px;">
+                                                    <span t-esc="line['sub_total']"/>
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                                <td style="border: 1px solid black;">&#160;</td>
+                                            </t>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <t t-if="page['is_last']">
+                                    <div class="row mr-0">
+                                        <div class="col-6 offset-6 pr-0">
+                                            <table class="table table-bordered table-sm" style="border: 1px solid black;">
+                                                <tr>
+                                                    <td style="border: 1px solid black; background-color: #f0f0f0;">
+                                                        <strong>รวมเป็นเงิน</strong>
+                                                    </td>
+                                                    <td style="border: 1px solid black; text-align: right;">
+                                                        <span t-field="doc.total" t-options='{"widget": "monetary", "display_currency": doc.env.company.currency_id}'/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4 text-center">
+                                        <div class="col-6">
+                                            _______________________<br/>
+                                            ผู้รับของ
+                                        </div>
+                                        <div class="col-6">
+                                            _______________________<br/>
+                                            ผู้ส่งของ
+                                        </div>
+                                    </div>
+                                </t>
+
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
