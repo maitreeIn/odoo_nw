@@ -6,7 +6,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">sale_custom.report_product_barcode_template</field>
         <field name="report_file">sale_custom.report_product_barcode_template</field>
-        <field name="print_report_name">'Product Barcode - %s' % object.product_id.name</field>
+        <field name="print_report_name">'Product Barcodes'</field>
         <field name="binding_model_id" ref="model_nw_product_barcode_wizard"/>
         <field name="binding_type">report</field>
     </record>
@@ -16,27 +16,29 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.basic_layout">
                     <div class="page">
-                        <t t-foreach="range(o.quantity)" t-as="i">
-                            <div class="text-center" style="page-break-inside: avoid; margin-top: 20px; border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
-                                <h2 t-field="o.product_id.name"/>
-                                <h3 t-if="o.product_id.default_code">
-                                    [<span t-field="o.product_id.default_code"/>]
-                                </h3>
-                                
-                                <div class="mt-4 mb-4">
-                                    <!-- Use Odoo's built-in barcode generator -->
-                                    <img t-if="o.product_id.barcode" 
-                                         t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.product_id.barcode, 600, 150)" 
-                                         style="width: 300px; height: 75px;"/>
-                                    <div t-if="o.product_id.barcode" class="mt-2" style="font-size: 1.2em; letter-spacing: 2px;">
-                                        <span t-field="o.product_id.barcode"/>
+                        <t t-foreach="o.product_ids" t-as="product">
+                            <t t-foreach="range(o.quantity)" t-as="i">
+                                <div class="text-center" style="page-break-inside: avoid; margin-top: 20px; border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
+                                    <h2 t-field="product.name"/>
+                                    <h3 t-if="product.default_code">
+                                        [<span t-field="product.default_code"/>]
+                                    </h3>
+                                    
+                                    <div class="mt-4 mb-4">
+                                        <!-- Use Odoo's built-in barcode generator -->
+                                        <img t-if="product.barcode" 
+                                             t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', product.barcode, 600, 150)" 
+                                             style="width: 300px; height: 75px;"/>
+                                        <div t-if="product.barcode" class="mt-2" style="font-size: 1.2em; letter-spacing: 2px;">
+                                            <span t-field="product.barcode"/>
+                                        </div>
                                     </div>
+                                    
+                                    <h2 class="mt-2">
+                                        ราคา: <span t-esc="'{:.2f}'.format(product.sale_price)"/> บาท
+                                    </h2>
                                 </div>
-                                
-                                <h2 class="mt-2">
-                                    Price: <span t-field="o.product_id.sale_price" t-options='{"widget": "monetary", "display_currency": o.env.company.currency_id}'/>
-                                </h2>
-                            </div>
+                            </t>
                         </t>
                     </div>
                 </t>

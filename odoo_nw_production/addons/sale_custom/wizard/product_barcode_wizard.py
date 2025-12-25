@@ -4,7 +4,7 @@ class ProductBarcodeWizard(models.TransientModel):
     _name = 'nw.product.barcode.wizard'
     _description = 'Product Barcode Wizard'
 
-    product_id = fields.Many2one('nw.product', string='Product', required=True)
+    product_ids = fields.Many2many('nw.product', string='Products', required=True)
     quantity = fields.Integer(string='Quantity', default=1, required=True)
 
     def action_print_barcode(self):

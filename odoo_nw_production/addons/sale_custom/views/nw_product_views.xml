@@ -58,8 +58,14 @@
     <menuitem id="menu_nw_product"
               name="Products"
               parent="menu_sale_custom_root"
-              action="action_nw_product"
               groups="base.group_user"
               sequence="20"/>
+              
+    <menuitem id="menu_nw_product_product"
+              name="Product"
+              parent="menu_nw_product"
+              action="action_nw_product"
+              groups="base.group_user"
+              sequence="1"/>
 </odoo>
 

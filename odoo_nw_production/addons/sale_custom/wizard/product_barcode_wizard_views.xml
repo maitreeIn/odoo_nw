@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="Print Product Barcode">
                 <group>
-                    <field name="product_id"/>
+                    <field name="product_ids" widget="many2many_tags"/>
                     <field name="quantity"/>
                 </group>
                 <footer>
@@ -26,7 +26,7 @@
 
     <menuitem id="menu_product_barcode_wizard"
               name="Print Barcode"
-              parent="sale_custom.menu_sale_custom_root"
+              parent="sale_custom.menu_nw_product"
               action="action_product_barcode_wizard"
-              sequence="25"/>
+              sequence="2"/>
 </odoo>
